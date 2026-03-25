@@ -173,9 +173,12 @@ def change_password():
 @login_required
 def dashboard():
     data = load_data()
+    all_bookings = load_bookings()
+    pending = sum(1 for b in all_bookings if b["status"] == "pending")
     return render_template("dashboard.html", data=data,
                            menu_count=len(data["menu"]),
-                           gallery_count=len(data["gallery"]))
+                           gallery_count=len(data["gallery"]),
+                           pending_bookings=pending)
 
 @app.route("/admin/hours", methods=["GET", "POST"])
 @login_required
@@ -307,6 +310,84 @@ def gallery_delete(filename):
 @app.route("/api/site-data")
 def api_site_data():
     return jsonify(load_data())
+
+# ── Bookings ─────────────────────────────────────────────────────
+
+BOOKINGS_FILE = "data/bookings.json"
+
+def load_bookings():
+    if os.path.exists(BOOKINGS_FILE):
+        with open(BOOKINGS_FILE) as f:
+            return json.load(f)
+    return []
+
+def save_bookings(bookings):
+    with open(BOOKINGS_FILE, "w") as f:
+        json.dump(bookings, f, indent=2)
+
+@app.route("/book", methods=["POST"])
+def book():
+    name    = request.form.get("name", "").strip()
+    email   = request.form.get("email", "").strip()
+    phone   = request.form.get("phone", "").strip()
+    date    = request.form.get("date", "").strip()
+    time    = request.form.get("time", "").strip()
+    guests  = request.form.get("guests", "").strip()
+    message = request.form.get("message", "").strip()
+
+    if not all([name, email, date, time, guests]):
+        flash("Please fill in all required fields.", "error")
+        return redirect(url_for("website") + "#booking")
+
+    bookings = load_bookings()
+    bookings.append({
+        "id":         len(bookings) + 1,
+        "name":       name,
+        "email":      email,
+        "phone":      phone,
+        "date":       date,
+        "time":       time,
+        "guests":     guests,
+        "message":    message,
+        "status":     "pending",
+        "created_at": datetime.now().strftime("%Y-%m-%d %H:%M")
+    })
+    save_bookings(bookings)
+    flash("Booking request sent! We will confirm shortly.", "success")
+    return redirect(url_for("website") + "#booking")
+
+@app.route("/admin/bookings")
+@login_required
+def bookings():
+    all_bookings = load_bookings()
+    all_bookings = sorted(all_bookings, key=lambda x: x["created_at"], reverse=True)
+    counts = {
+        "pending":   sum(1 for b in all_bookings if b["status"] == "pending"),
+        "confirmed": sum(1 for b in all_bookings if b["status"] == "confirmed"),
+        "cancelled": sum(1 for b in all_bookings if b["status"] == "cancelled"),
+        "total":     len(all_bookings)
+    }
+    return render_template("bookings.html", bookings=all_bookings, counts=counts)
+
+@app.route("/admin/bookings/<int:booking_id>/status", methods=["POST"])
+@login_required
+def booking_status(booking_id):
+    all_bookings = load_bookings()
+    booking = next((b for b in all_bookings if b["id"] == booking_id), None)
+    if booking:
+        booking["status"] = request.form.get("status", "pending")
+        save_bookings(all_bookings)
+        flash(f"Booking #{booking_id} marked as {booking['status']}.", "success")
+    return redirect(url_for("bookings"))
+
+@app.route("/admin/bookings/<int:booking_id>/delete", methods=["POST"])
+@login_required
+def booking_delete(booking_id):
+    all_bookings = load_bookings()
+    all_bookings = [b for b in all_bookings if b["id"] != booking_id]
+    save_bookings(all_bookings)
+    flash("Booking deleted.", "success")
+    return redirect(url_for("bookings"))
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

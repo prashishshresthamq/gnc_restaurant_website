@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Bookings — G & C Brews CMS{% endblock %}
+{% block page_title %}Bookings{% endblock %}
+
+{% block content %}
+
+<!-- Stats -->
+<div class="stats-grid" style="grid-template-columns: repeat(4,1fr);">
+  <div class="stat-card">
+    <div class="stat-label">Total</div>
+    <div class="stat-value">{{ counts.total }}</div>
+    <div class="stat-sub">All requests</div>
+  </div>
+  <div class="stat-card" style="border-left: 3px solid #e67e22;">
+    <div class="stat-label">Pending</div>
+    <div class="stat-value" style="color:#e67e22">{{ counts.pending }}</div>
+    <div class="stat-sub">Awaiting confirmation</div>
+  </div>
+  <div class="stat-card" style="border-left: 3px solid #27ae60;">
+    <div class="stat-label">Confirmed</div>
+    <div class="stat-value" style="color:#27ae60">{{ counts.confirmed }}</div>
+    <div class="stat-sub">Approved bookings</div>
+  </div>
+  <div class="stat-card" style="border-left: 3px solid #c0392b;">
+    <div class="stat-label">Cancelled</div>
+    <div class="stat-value" style="color:#c0392b">{{ counts.cancelled }}</div>
+    <div class="stat-sub">Declined requests</div>
+  </div>
+</div>
+
+<!-- Bookings table -->
+<div class="card" style="margin-top: 1.5rem;">
+  <div class="card-header">
+    <div class="card-title">📅 All Booking Requests</div>
+  </div>
+
+  {% if bookings %}
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Guest</th>
+        <th>Contact</th>
+        <th>Date & Time</th>
+        <th>Guests</th>
+        <th>Message</th>
+        <th>Received</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in bookings %}
+      <tr>
+        <td style="color:var(--muted); font-size:0.8rem">#{{ b.id }}</td>
+        <td style="font-weight:600">{{ b.name }}</td>
+        <td>
+          <div style="font-size:0.84rem">{{ b.email }}</div>
+          {% if b.phone %}
+          <div style="font-size:0.78rem; color:var(--muted)">{{ b.phone }}</div>
+          {% endif %}
+        </td>
+        <td>
+          <div style="font-weight:500">{{ b.date }}</div>
+          <div style="font-size:0.8rem; color:var(--muted)">{{ b.time }}</div>
+        </td>
+        <td style="text-align:center">{{ b.guests }}</td>
+        <td style="font-size:0.82rem; color:var(--muted); max-width:180px;">
+          {{ b.message[:60] }}{% if b.message|length > 60 %}…{% endif %}
+          {% if not b.message %}<span style="font-style:italic">—</span>{% endif %}
+        </td>
+        <td style="font-size:0.78rem; color:var(--muted)">{{ b.created_at }}</td>
+        <td>
+          {% if b.status == 'pending' %}
+            <span class="badge" style="background:#fef9e7; color:#d68910; border:1px solid #f9e79f;">⏳ Pending</span>
+          {% elif b.status == 'confirmed' %}
+            <span class="badge" style="background:#eafaf1; color:#27ae60; border:1px solid #a9dfbf;">✓ Confirmed</span>
+          {% else %}
+            <span class="badge" style="background:#fdf2f0; color:#c0392b; border:1px solid #f5b7b1;">✗ Cancelled</span>
+          {% endif %}
+        </td>
+        <td>
+          <div class="actions" style="flex-wrap:wrap; gap:0.4rem;">
+            {% if b.status != 'confirmed' %}
+            <form method="POST" action="/admin/bookings/{{ b.id }}/status">
+              <input type="hidden" name="status" value="confirmed">
+              <button type="submit" class="btn btn-sm" style="background:#eafaf1; color:#27ae60; border:1px solid #a9dfbf;">✓ Confirm</button>
+            </form>
+            {% endif %}
+            {% if b.status != 'cancelled' %}
+            <form method="POST" action="/admin/bookings/{{ b.id }}/status">
+              <input type="hidden" name="status" value="cancelled">
+              <button type="submit" class="btn btn-sm" style="background:#fdf2f0; color:#c0392b; border:1px solid #f5b7b1;">✗ Cancel</button>
+            </form>
+            {% endif %}
+            <form method="POST" action="/admin/bookings/{{ b.id }}/delete"
+                  onsubmit="return confirm('Delete booking from {{ b.name }}?')">
+              <button type="submit" class="btn btn-danger btn-sm">🗑</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">📅</div>
+    <p>No booking requests yet. They will appear here when customers submit the form on your website.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

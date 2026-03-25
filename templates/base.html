@@ -453,6 +453,10 @@
       <span class="nav-icon">🖼</span> Gallery Photos
     </a>
 
+    <a href="{{ url_for('bookings') }}" class="{{ 'active' if request.endpoint == 'bookings' }}">
+      <span class="nav-icon">📅</span> Bookings
+    </a>
+
     <div class="nav-group-label">Settings</div>
     <a href="{{ url_for('hours') }}" class="{{ 'active' if request.endpoint == 'hours' }}">
       <span class="nav-icon">🕐</span> Opening Hours

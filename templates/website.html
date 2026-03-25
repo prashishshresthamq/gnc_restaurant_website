@@ -144,6 +144,32 @@
   .admin-link { color: rgba(255,255,255,0.2); text-decoration: none; font-size: 0.7rem; transition: color 0.2s; }
   .admin-link:hover { color: rgba(255,255,255,0.5); }
 
+  /* BOOKING */
+  .booking-section { padding: 8rem 5rem; background: var(--cream); }
+  .booking-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; align-items: start; }
+  .booking-info { }
+  .booking-info .section-eyebrow { }
+  .booking-info p { font-size: 0.95rem; line-height: 1.9; color: var(--muted); font-weight: 300; margin-top: 1rem; }
+  .booking-details { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .booking-detail { display: flex; gap: 1rem; align-items: center; font-size: 0.88rem; color: var(--muted); }
+  .booking-detail span:first-child { font-size: 1.2rem; }
+  .booking-form-wrap { background: #fff; padding: 2.5rem; box-shadow: 0 8px 40px rgba(0,0,0,0.07); }
+  .booking-form-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-style: italic; color: var(--charcoal); margin-bottom: 1.8rem; }
+  .bform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .bform-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .bform-group.full { grid-column: span 2; }
+  .bform-group label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--charcoal); }
+  .bform-group label .req { color: var(--sage-dark); }
+  .bform-group input, .bform-group select, .bform-group textarea { padding: 0.7rem 1rem; border: 1.5px solid var(--border, #e8e4dc); border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--charcoal); background: var(--bg, #f8f7f4); outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; }
+  .bform-group input:focus, .bform-group select:focus, .bform-group textarea:focus { border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122,140,110,0.15); background: #fff; }
+  .bform-group textarea { resize: vertical; min-height: 80px; }
+  .btn-book { width: 100%; margin-top: 1.2rem; padding: 0.95rem; background: var(--sage-dark); color: var(--cream); border: none; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+  .btn-book:hover { background: var(--sage); }
+  .booking-flash { padding: 0.85rem 1.1rem; border-radius: 3px; font-size: 0.86rem; font-weight: 500; margin-bottom: 1.2rem; }
+  .booking-flash.success { background: #eafaf1; color: #27ae60; border: 1px solid #a9dfbf; }
+  .booking-flash.error { background: #fdf2f0; color: #c0392b; border: 1px solid #f5b7b1; }
+  @media (max-width: 900px) { .booking-section { padding: 4rem 2rem; } .booking-inner { grid-template-columns: 1fr; gap: 2.5rem; } .bform-grid { grid-template-columns: 1fr; } .bform-group.full { grid-column: span 1; } }
+
   /* Animations */
   @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
@@ -182,6 +208,7 @@
     <li><a href="#about">Our Story</a></li>
     <li><a href="#menu">Menu</a></li>
     <li><a href="#visit">Visit</a></li>
+    {# <li><a href="#booking">Book a Table</a></li>#}
     {% if data.contact.instagram %}
     <li><a href="https://instagram.com/{{ data.contact.instagram }}" target="_blank">Instagram</a></li>
     {% endif %}
@@ -283,8 +310,7 @@
     <div class="section-eyebrow">Our Story</div>
     <h2 class="section-title">Coffee<br><em>With Good Vibes</em></h2>
     <p class="section-body">G & C BREWS is a modern Australian café located at 786 Old Princes Highway, Sutherland NSW. We offer quality barista-made coffee, fresh brunch favourites, and a relaxed dine-in experience in a welcoming, greenery-inspired space.</p>
-    <p class="section-body">With seating for 25–30 guests and an open kitchen concept, G & C BREWS is the perfect local spot for your morning coffee, casual meetings, or weekend brunch.
-We focus on fresh ingredients, friendly service, and creating a comfortable space for the Sutherland community to enjoy great food and coffee.</p>
+    <p class="section-body">With seating for 25–30 guests and an open kitchen concept, G & C BREWS is the perfect local spot for your morning coffee, casual meetings, or weekend brunch. We focus on fresh ingredients, friendly service, and creating a comfortable space for the Sutherland community to enjoy great food and coffee.</p>
     <a href="#menu" class="btn-primary" style="display:inline-block; margin-top:0.5rem">See Our Menu →</a>
   </div>
 </section>
@@ -324,7 +350,7 @@ We focus on fresh ingredients, friendly service, and creating a comfortable spac
 <!-- VISIT -->
 <section class="visit" id="visit">
   <div class="visit-map">
-    <iframe
+     <iframe
       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d151.0577437!3d-34.0320661!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12c700710c6a95%3A0x7579e666f6a3fb60!2sG+%26+C+BREWS!5e0!3m2!1sen!2sau!4v1700000000000"
       allowfullscreen="" loading="lazy">
     </iframe>
@@ -402,6 +428,110 @@ We focus on fresh ingredients, friendly service, and creating a comfortable spac
 </section>
 {% endif %}
 
+
+<!-- BOOKING -->
+{# 
+<section class="booking-section" id="booking">
+  <div class="booking-inner">
+    <div class="booking-info fade-up">
+      <div class="section-eyebrow">Reserve a Table</div>
+      <h2 class="section-title">Make a<br><em>Booking</em></h2>
+      <p>Whether it's a quiet breakfast for two or a group brunch, we'd love to have you. Fill in the form and we'll confirm your booking as soon as possible.</p>
+      <div class="booking-details">
+        <div class="booking-detail">
+          <span>🕐</span>
+          <span>Mon–Fri: {{ data.hours.mon_fri }}</span>
+        </div>
+        <div class="booking-detail">
+          <span>🕐</span>
+          <span>Saturday: {{ data.hours.saturday }}</span>
+        </div>
+        <div class="booking-detail">
+          <span>🕐</span>
+          <span>Sunday: {{ data.hours.sunday }}</span>
+        </div>
+        <div class="booking-detail">
+          <span>📍</span>
+          <span>{{ data.contact.address }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="booking-form-wrap fade-up">
+      <div class="booking-form-title">Request a Reservation</div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="booking-flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+
+      <form method="POST" action="/book">
+        <div class="bform-grid">
+          <div class="bform-group">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" name="name" placeholder="Jane Smith" required>
+          </div>
+          <div class="bform-group">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" name="email" placeholder="jane@email.com" required>
+          </div>
+          <div class="bform-group">
+            <label>Phone</label>
+            <input type="tel" name="phone" placeholder="04XX XXX XXX">
+          </div>
+          <div class="bform-group">
+            <label>Number of Guests <span class="req">*</span></label>
+            <select name="guests" required>
+              <option value="">Select guests</option>
+              <option value="1">1 person</option>
+              <option value="2">2 people</option>
+              <option value="3">3 people</option>
+              <option value="4">4 people</option>
+              <option value="5">5 people</option>
+              <option value="6">6 people</option>
+              <option value="7-10">7–10 people</option>
+              <option value="10+">10+ people</option>
+            </select>
+          </div>
+          <div class="bform-group">
+            <label>Date <span class="req">*</span></label>
+            <input type="date" name="date" required>
+          </div>
+          <div class="bform-group">
+            <label>Preferred Time <span class="req">*</span></label>
+            <select name="time" required>
+              <option value="">Select time</option>
+              <option value="6:00 AM">6:00 AM</option>
+              <option value="6:30 AM">6:30 AM</option>
+              <option value="7:00 AM">7:00 AM</option>
+              <option value="7:30 AM">7:30 AM</option>
+              <option value="8:00 AM">8:00 AM</option>
+              <option value="8:30 AM">8:30 AM</option>
+              <option value="9:00 AM">9:00 AM</option>
+              <option value="9:30 AM">9:30 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="10:30 AM">10:30 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="11:30 AM">11:30 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="12:30 PM">12:30 PM</option>
+              <option value="1:00 PM">1:00 PM</option>
+              <option value="1:30 PM">1:30 PM</option>
+              <option value="2:00 PM">2:00 PM</option>
+            </select>
+          </div>
+          <div class="bform-group full">
+            <label>Special Requests</label>
+            <textarea name="message" placeholder="Dietary requirements, high chair needed, occasion..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn-book">Request Booking →</button>
+      </form>
+    </div>
+  </div>
+</section>
+#}
 <!-- FOOTER -->
 <footer>
   <div class="footer-top">
@@ -415,6 +545,7 @@ We focus on fresh ingredients, friendly service, and creating a comfortable spac
           <li><a href="#about">Our Story</a></li>
           <li><a href="#menu">Menu</a></li>
           <li><a href="#visit">Visit Us</a></li>
+          <li><a href="#booking">Book a Table</a></li>
         </ul>
       </div>
       <div class="footer-col">
