@@ -57,6 +57,14 @@
       "description": "",
       "price": "18",
       "image": "20260325165356_Screenshot_2026-03-25_at_4.53.42_PM.png"
+    },
+    {
+      "id": 8,
+      "name": "Classic Grilled Chicken Burger",
+      "category": "Breakfast",
+      "description": "This is the test version",
+      "price": "20",
+      "image": ""
     }
   ],
   "gallery": [],
