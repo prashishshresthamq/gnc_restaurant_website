@@ -2,10 +2,10 @@
   "hours": {
     "mon_fri": "9:30am - 3:00pm",
     "saturday": "6:00am - 3:00pm",
-    "sunday": "7:00am - 2:00pm"
+    "sunday": "closed"
   },
   "contact": {
-    "address": "786 Old Princes Highway, Sydney NSW",
+    "address": "34-40 Baltimore Street Belfield",
     "instagram": "gnc.brews2025",
     "phone": ""
   },
@@ -32,7 +32,7 @@
       "category": "Coffee",
       "description": "Seasonal latte specials crafted by our baristas.",
       "price": "6.50",
-      "image": ""
+      "image": "20260325165136_Screenshot_2026-03-25_at_4.51.23_PM.png"
     },
     {
       "id": 4,
@@ -40,15 +40,7 @@
       "category": "Drinks",
       "description": "Thick house-blended smoothies in seasonal flavours.",
       "price": "12.00",
-      "image": ""
-    },
-    {
-      "id": 5,
-      "name": "Avo Toast",
-      "category": "Brunch",
-      "description": "Smashed avocado on sourdough with feta and microgreens.",
-      "price": "18.00",
-      "image": ""
+      "image": "20260325165202_Screenshot_2026-03-25_at_4.51.52_PM.png"
     },
     {
       "id": 6,
@@ -56,7 +48,15 @@
       "category": "Pastries",
       "description": "Fresh croissants and scrolls from local artisan bakers.",
       "price": "5.50",
-      "image": ""
+      "image": "20260325165251_Screenshot_2026-03-25_at_4.52.40_PM.png"
+    },
+    {
+      "id": 7,
+      "name": "Google ",
+      "category": "Breakfast",
+      "description": "",
+      "price": "18",
+      "image": "20260325165356_Screenshot_2026-03-25_at_4.53.42_PM.png"
     }
   ],
   "gallery": [],
