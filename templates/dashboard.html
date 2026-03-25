@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — G & C Brews CMS{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Menu Items</div>
+    <div class="stat-value">{{ menu_count }}</div>
+    <div class="stat-sub">Active dishes</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Gallery Photos</div>
+    <div class="stat-value">{{ gallery_count }}</div>
+    <div class="stat-sub">Uploaded images</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Opening Hours</div>
+    <div class="stat-value" style="font-size:1rem; margin-top:0.4rem; line-height:1.6">
+      Mon–Fri<br>
+      <span style="font-family:'DM Sans',sans-serif; font-size:0.88rem; color:var(--muted)">{{ data.hours.mon_fri }}</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Location</div>
+    <div class="stat-value" style="font-size:0.85rem; font-family:'DM Sans'; margin-top:0.3rem; line-height:1.5; color:var(--muted)">
+      {{ data.contact.address[:30] }}…
+    </div>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Quick Actions</div>
+    </div>
+    <div class="card-body" style="display:flex; flex-direction:column; gap:0.8rem;">
+      <a href="{{ url_for('menu_add') }}" class="btn btn-primary" style="justify-content:center">+ Add Menu Item</a>
+      <a href="{{ url_for('gallery') }}" class="btn btn-outline" style="justify-content:center">🖼 Upload Photos</a>
+      <a href="{{ url_for('hours') }}" class="btn btn-outline" style="justify-content:center">🕐 Edit Hours</a>
+      <a href="{{ url_for('hero') }}" class="btn btn-outline" style="justify-content:center">✦ Edit Intro Text</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Current Hours</div>
+      <a href="{{ url_for('hours') }}" class="btn btn-outline btn-sm">Edit</a>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr>
+          <td style="font-weight:600; color:var(--charcoal)">Mon – Fri</td>
+          <td>{{ data.hours.mon_fri }}</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600; color:var(--charcoal)">Saturday</td>
+          <td>{{ data.hours.saturday }}</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600; color:var(--charcoal)">Sunday</td>
+          <td>{{ data.hours.sunday }}</td>
+        </tr>
+      </table>
+      <div style="margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid var(--border);">
+        <div style="font-size:0.75rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem">Instagram</div>
+        <div>@{{ data.contact.instagram }}</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="card" style="margin-top:1.5rem;">
+  <div class="card-header">
+    <div class="card-title">Menu Preview</div>
+    <a href="{{ url_for('menu') }}" class="btn btn-outline btn-sm">Manage All</a>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Image</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data.menu[:5] %}
+      <tr>
+        <td style="font-weight:500">{{ item.name }}</td>
+        <td><span class="badge badge-sage">{{ item.category }}</span></td>
+        <td>${{ item.price }}</td>
+        <td>
+          {% if item.image %}
+            <img src="{{ url_for('static', filename='uploads/' + item.image) }}" class="img-preview">
+          {% else %}
+            <span style="color:var(--muted); font-size:0.78rem">No image</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — G & C Brews</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #7a8c6e;
+    --sage-dark: #4f6247;
+    --sage-light: #c4d4b8;
+    --cream: #f5f0e8;
+    --charcoal: #2a2a25;
+    --muted: #8a8578;
+    --border: #e8e4dc;
+    --bg: #f8f7f4;
+    --danger: #c0392b;
+    --success: #27ae60;
+    --warning: #d68910;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--charcoal);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Decorative background */
+  body::before {
+    content: 'G&C';
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 40vw;
+    font-style: italic;
+    color: rgba(255,255,255,0.02);
+    font-weight: 700;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .login-wrap {
+    width: 100%;
+    max-width: 420px;
+    padding: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Brand header above card */
+  .login-brand {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .login-brand-logo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--cream);
+    display: block;
+  }
+
+  .login-brand-sub {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sage-light);
+    font-weight: 500;
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* Card */
+  .login-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  }
+
+  .login-card-header {
+    background: var(--sage-dark);
+    padding: 1.8rem 2rem;
+    text-align: center;
+  }
+
+  .login-card-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  .login-card-header p {
+    font-size: 0.78rem;
+    color: rgba(245,240,232,0.6);
+    margin-top: 0.3rem;
+    letter-spacing: 0.04em;
+  }
+
+  .login-card-body {
+    padding: 2rem;
+  }
+
+  /* Flash messages */
+  .flash {
+    padding: 0.8rem 1rem;
+    border-radius: 4px;
+    font-size: 0.84rem;
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+  }
+  .flash.error   { background: #fdf2f0; color: var(--danger);  border: 1px solid #f5b7b1; }
+  .flash.success { background: #eafaf1; color: var(--success); border: 1px solid #a9dfbf; }
+  .flash.warning { background: #fef9e7; color: var(--warning); border: 1px solid #f9e79f; }
+
+  /* Form */
+  .form-group { margin-bottom: 1.2rem; }
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    margin-bottom: 0.45rem;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--charcoal);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input:focus {
+    border-color: var(--sage);
+    box-shadow: 0 0 0 3px rgba(122,140,110,0.15);
+    background: #fff;
+  }
+
+  .remember-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .remember-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--sage-dark);
+    cursor: pointer;
+  }
+
+  .remember-row label {
+    font-size: 0.82rem;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: var(--muted);
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--sage-dark);
+    color: var(--cream);
+    border: none;
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-login:hover { background: var(--sage); }
+  .btn-login:active { transform: scale(0.99); }
+
+  .login-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .login-footer a {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .login-footer a:hover { color: var(--sage-dark); }
+
+  /* Password eye toggle */
+  .pw-wrap { position: relative; }
+  .pw-toggle {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 1rem;
+    padding: 0;
+    transition: color 0.2s;
+  }
+  .pw-toggle:hover { color: var(--sage-dark); }
+</style>
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="login-brand">
+    <span class="login-brand-logo">G & C Brews</span>
+    <span class="login-brand-sub">Admin Panel</span>
+  </div>
+
+  <div class="login-card">
+    <div class="login-card-header">
+      <h1>Welcome back</h1>
+      <p>Sign in to manage your café</p>
+    </div>
+    <div class="login-card-body">
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+
+      <form method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username"
+                 placeholder="Enter your username"
+                 value="{{ request.form.get('username', '') }}"
+                 autocomplete="username" autofocus required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="password" name="password"
+                   placeholder="Enter your password"
+                   autocomplete="current-password" required>
+            <button type="button" class="pw-toggle" onclick="togglePw()" title="Show/hide password">👁</button>
+          </div>
+        </div>
+
+        <div class="remember-row">
+          <input type="checkbox" id="remember" name="remember">
+          <label for="remember">Keep me logged in</label>
+        </div>
+
+        <button type="submit" class="btn-login">Sign In →</button>
+      </form>
+
+      <div class="login-footer">
+        <a href="/">← Back to website</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function togglePw() {
+  const input = document.getElementById('password');
+  const btn = document.querySelector('.pw-toggle');
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+  }
+}
+</script>
+</body>
+</html>

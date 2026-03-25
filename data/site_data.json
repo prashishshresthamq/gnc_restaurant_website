@@ -1,0 +1,68 @@
+{
+  "hours": {
+    "mon_fri": "9:30am - 3:00pm",
+    "saturday": "6:00am - 3:00pm",
+    "sunday": "7:00am - 2:00pm"
+  },
+  "contact": {
+    "address": "786 Old Princes Highway, Sydney NSW",
+    "instagram": "gnc.brews2025",
+    "phone": ""
+  },
+  "menu": [
+    {
+      "id": 1,
+      "name": "Big BreakFast Edited",
+      "category": "Breakfast",
+      "description": "Bacon, eggs, avocado, sourdough toast, roasted tomato.",
+      "price": "22.00",
+      "image": "20260325133445_Screenshot_2026-03-25_at_1.34.24_PM.png"
+    },
+    {
+      "id": 2,
+      "name": "healthy granola bowl",
+      "category": "Brunch",
+      "description": "Poached eggs on toasted muffin with hollandaise sauce.",
+      "price": "19.00",
+      "image": "20260325133540_Screenshot_2026-03-25_at_1.35.11_PM.png"
+    },
+    {
+      "id": 3,
+      "name": "Specialty Lattes",
+      "category": "Coffee",
+      "description": "Seasonal latte specials crafted by our baristas.",
+      "price": "6.50",
+      "image": ""
+    },
+    {
+      "id": 4,
+      "name": "House Smoothies",
+      "category": "Drinks",
+      "description": "Thick house-blended smoothies in seasonal flavours.",
+      "price": "12.00",
+      "image": ""
+    },
+    {
+      "id": 5,
+      "name": "Avo Toast",
+      "category": "Brunch",
+      "description": "Smashed avocado on sourdough with feta and microgreens.",
+      "price": "18.00",
+      "image": ""
+    },
+    {
+      "id": 6,
+      "name": "Daily Bakes",
+      "category": "Pastries",
+      "description": "Fresh croissants and scrolls from local artisan bakers.",
+      "price": "5.50",
+      "image": ""
+    }
+  ],
+  "gallery": [],
+  "hero": {
+    "tagline": "Good Coffee, Great Food.",
+    "subtitle": "Breakfast & Lunch in the heart of Sydney",
+    "description": "A neighbourhood cafe where every cup is crafted with care and every plate is made to linger over."
+  }
+}

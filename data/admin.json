@@ -1,0 +1,5 @@
+{
+  "username": "admin",
+  "password": "scrypt:32768:8:1$iMJ1dgbTpjgoJphg$9a61518500acd39ab60e6618b8b48f5d240e60b4d119590b2678cada6ac1f8142e187c7c64496fdea1f0cf63984efc970c84d704b3b01d1341fe4685ff74848c",
+  "first_login": false
+}

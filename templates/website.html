@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G & C Brews — Café</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #7a8c6e;
+    --sage-light: #a8bb99;
+    --sage-dark: #4f6247;
+    --cream: #f5f0e8;
+    --warm-white: #faf8f4;
+    --charcoal: #2a2a25;
+    --brown: #6b4f3a;
+    --gold: #c9a84c;
+    --muted: #8a8578;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--warm-white); color: var(--charcoal); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(250,248,244,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(122,140,110,0.15);
+    transition: box-shadow 0.3s;
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; color: var(--sage-dark); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--charcoal); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--sage-dark); }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 70px; }
+  .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 5rem 4rem 5rem 5rem; }
+  .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage); font-weight: 500; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--sage); }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5vw, 5rem); line-height: 1.05; margin-bottom: 0.3rem; }
+  .hero-title em { font-style: italic; color: var(--sage-dark); }
+  .hero-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--muted); margin-bottom: 2.5rem; font-weight: 300; }
+  .hero-desc { font-size: 0.95rem; line-height: 1.8; color: var(--muted); max-width: 380px; margin-bottom: 3rem; font-weight: 300; }
+  .hero-cta { display: flex; gap: 1.2rem; align-items: center; }
+  .btn-primary { display: inline-block; background: var(--sage-dark); color: var(--cream); padding: 0.9rem 2.2rem; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: all 0.3s; border: 2px solid var(--sage-dark); }
+  .btn-primary:hover { background: transparent; color: var(--sage-dark); }
+  .btn-link { color: var(--charcoal); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .btn-link:hover { color: var(--sage-dark); }
+  .hero-hours { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid rgba(122,140,110,0.2); display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+  .hour-label { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage); font-weight: 500; margin-bottom: 0.3rem; }
+  .hour-time { font-family: 'Playfair Display', serif; font-size: 0.92rem; }
+  .hero-right { position: relative; overflow: hidden; }
+  .hero-img-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 100%; gap: 3px; }
+  .hero-img-grid .img-item { overflow: hidden; }
+  .hero-img-grid .img-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s; }
+  .hero-img-grid .img-item:hover img { transform: scale(1.06); }
+  .hero-img-grid .img-item:first-child { grid-row: span 2; }
+  .hero-badge { position: absolute; bottom: 2.5rem; right: 2.5rem; width: 100px; height: 100px; background: var(--sage-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--cream); text-align: center; z-index: 10; animation: slowSpin 20s linear infinite; }
+  .hero-badge-text { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; line-height: 1.4; }
+  @keyframes slowSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* MARQUEE */
+  .marquee-section { background: var(--sage-dark); padding: 0.9rem 0; overflow: hidden; }
+  .marquee-track { display: flex; animation: marquee 22s linear infinite; white-space: nowrap; }
+  .marquee-item { color: var(--cream); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0 2.5rem; font-weight: 500; flex-shrink: 0; }
+  .marquee-dot { color: var(--sage-light); }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ABOUT */
+  .about { padding: 8rem 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .about-img-wrap { position: relative; }
+  .about-img-main { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+  .about-img-accent { position: absolute; bottom: -2rem; right: -2rem; width: 55%; aspect-ratio: 1; object-fit: cover; border: 6px solid var(--warm-white); }
+  .about-tag { position: absolute; top: 2rem; left: -2rem; background: var(--cream); padding: 1.2rem 1.5rem; border-left: 3px solid var(--sage); }
+  .about-tag p { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; color: var(--sage-dark); }
+  .about-tag span { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .section-eyebrow { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage); font-weight: 500; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.8rem; }
+  .section-eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--sage); }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem,3.5vw,3.2rem); line-height: 1.15; margin-bottom: 1.5rem; }
+  .section-title em { font-style: italic; color: var(--sage-dark); }
+  .section-body { font-size: 0.95rem; line-height: 1.9; color: var(--muted); font-weight: 300; margin-bottom: 1.5rem; }
+
+  /* MENU */
+  .menu-section { background: var(--charcoal); padding: 8rem 5rem; position: relative; overflow: hidden; }
+  .menu-section::before { content: 'MENU'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: 'Playfair Display', serif; font-size: 18vw; color: rgba(255,255,255,0.02); font-weight: 700; pointer-events: none; white-space: nowrap; }
+  .menu-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
+  .menu-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+  .menu-card { position: relative; overflow: hidden; aspect-ratio: 3/4; cursor: pointer; }
+  .menu-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s; filter: brightness(0.75); }
+  .menu-card:hover img { transform: scale(1.08); filter: brightness(0.5); }
+  .menu-card-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); transition: background 0.4s; }
+  .menu-card:hover .menu-card-overlay { background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 100%); }
+  .menu-card-cat { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage-light); font-weight: 500; margin-bottom: 0.5rem; }
+  .menu-card-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #fff; font-style: italic; line-height: 1.2; }
+  .menu-card-price { font-size: 0.88rem; color: var(--sage-light); margin-top: 0.3rem; font-weight: 500; }
+  .menu-card-desc { font-size: 0.82rem; color: rgba(255,255,255,0.7); margin-top: 0.5rem; line-height: 1.6; max-height: 0; overflow: hidden; transition: max-height 0.5s, opacity 0.4s; opacity: 0; }
+  .menu-card:hover .menu-card-desc { max-height: 80px; opacity: 1; }
+  .menu-no-image { width: 100%; height: 100%; background: linear-gradient(135deg, #3a4a35, #2a3525); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+
+  /* VISIT */
+  .visit { display: grid; grid-template-columns: 1fr 1fr; min-height: 70vh; }
+  .visit-map { background: #d0cfc9; position: relative; overflow: hidden; min-height: 500px; }
+  .visit-map iframe { width: 100%; height: 100%; border: none; }
+  .visit-info { background: var(--sage-dark); padding: 6rem 5rem; display: flex; flex-direction: column; justify-content: center; color: var(--cream); }
+  .visit-info .section-eyebrow { color: var(--sage-light); }
+  .visit-info .section-eyebrow::before { background: var(--sage-light); }
+  .visit-info .section-title { color: var(--cream); }
+  .visit-details { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 2rem; }
+  .visit-detail-item { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .visit-detail-icon { font-size: 1.3rem; margin-top: 0.1rem; }
+  .visit-detail-label { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-light); font-weight: 500; margin-bottom: 0.4rem; }
+  .visit-detail-value { font-size: 0.95rem; line-height: 1.7; color: rgba(245,240,232,0.85); font-weight: 300; }
+  .hours-table { display: grid; grid-template-columns: auto 1fr; gap: 0.3rem 1.2rem; }
+  .hours-day { font-size: 0.85rem; color: rgba(245,240,232,0.6); }
+  .hours-time { font-size: 0.85rem; color: rgba(245,240,232,0.9); }
+
+  /* GALLERY */
+  .gallery-section { padding: 6rem 5rem; text-align: center; }
+  .gallery-header { margin-bottom: 3rem; }
+  .gallery-header .section-eyebrow { justify-content: center; }
+  .gallery-header .section-eyebrow::before { display: none; }
+  .insta-handle { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; color: var(--sage-dark); display: block; margin-top: 0.5rem; text-decoration: none; transition: opacity 0.2s; }
+  .insta-handle:hover { opacity: 0.7; }
+  .insta-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; max-width: 900px; margin: 0 auto; }
+  .insta-item { aspect-ratio: 1; overflow: hidden; }
+  .insta-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s, filter 0.3s; filter: brightness(0.95); }
+  .insta-item:hover img { transform: scale(1.1); filter: brightness(0.7); }
+
+  /* FOOTER */
+  footer { background: var(--charcoal); padding: 4rem 5rem 2.5rem; color: rgba(245,240,232,0.6); }
+  .footer-top { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 2rem; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; color: var(--cream); }
+  .footer-logo span { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; font-style: normal; color: var(--sage-light); margin-top: 0.3rem; font-family: 'DM Sans',sans-serif; }
+  .footer-links { display: flex; gap: 4rem; }
+  .footer-col h4 { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage-light); font-weight: 500; margin-bottom: 1.2rem; font-family: 'DM Sans',sans-serif; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col a { font-size: 0.88rem; color: rgba(245,240,232,0.55); text-decoration: none; transition: color 0.2s; font-weight: 300; }
+  .footer-col a:hover { color: var(--cream); }
+  .footer-bottom { display: flex; justify-content: space-between; font-size: 0.75rem; }
+  .admin-link { color: rgba(255,255,255,0.2); text-decoration: none; font-size: 0.7rem; transition: color 0.2s; }
+  .admin-link:hover { color: rgba(255,255,255,0.5); }
+
+  /* Animations */
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .hero-left > * { animation: fadeInUp 0.9s ease forwards; }
+  .hero-left > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-left > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-left > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero-left > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero-left > *:nth-child(5) { animation-delay: 0.5s; }
+  .hero-left > *:nth-child(6) { animation-delay: 0.6s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 3rem 2rem; }
+    .hero-right { height: 50vh; }
+    .about { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 3rem; }
+    .menu-section { padding: 4rem 1.5rem; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .visit { grid-template-columns: 1fr; }
+    .insta-grid { grid-template-columns: repeat(3,1fr); }
+    .footer-top { flex-direction: column; gap: 2rem; }
+    .footer-links { flex-direction: column; gap: 2rem; }
+    .gallery-section { padding: 4rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-logo">G & C Brews</div>
+  <ul class="nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#visit">Visit</a></li>
+    {% if data.contact.instagram %}
+    <li><a href="https://instagram.com/{{ data.contact.instagram }}" target="_blank">Instagram</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Open 7 Days a Week</div>
+    <h1 class="hero-title">
+      {% set parts = data.hero.tagline.split(',') %}
+      {% if parts|length > 1 %}
+        {{ parts[0] }},<br><em>{{ parts[1].strip() }}</em>
+      {% else %}
+        <em>{{ data.hero.tagline }}</em>
+      {% endif %}
+    </h1>
+    <p class="hero-subtitle">{{ data.hero.subtitle }}</p>
+    <p class="hero-desc">{{ data.hero.description }}</p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn-primary">Explore Menu</a>
+      <a href="#visit" class="btn-link">→ Find Us</a>
+    </div>
+    <div class="hero-hours">
+      <div>
+        <div class="hour-label">Mon – Fri</div>
+        <div class="hour-time">{{ data.hours.mon_fri }}</div>
+      </div>
+      <div>
+        <div class="hour-label">Saturday</div>
+        <div class="hour-time">{{ data.hours.saturday }}</div>
+      </div>
+      <div>
+        <div class="hour-label">Sunday</div>
+        <div class="hour-time">{{ data.hours.sunday }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-grid">
+      {% set hero_photos = data.gallery[:3] %}
+      {% if hero_photos|length >= 1 %}
+        <div class="img-item">
+          <img src="{{ url_for('static', filename='uploads/' + hero_photos[0].filename) }}" alt="Café">
+        </div>
+      {% else %}
+        <div class="img-item"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80" alt="Café"></div>
+      {% endif %}
+      {% if hero_photos|length >= 2 %}
+        <div class="img-item"><img src="{{ url_for('static', filename='uploads/' + hero_photos[1].filename) }}" alt="Food"></div>
+      {% else %}
+        <div class="img-item"><img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=600&q=80" alt="Food"></div>
+      {% endif %}
+      {% if hero_photos|length >= 3 %}
+        <div class="img-item"><img src="{{ url_for('static', filename='uploads/' + hero_photos[2].filename) }}" alt="Coffee"></div>
+      {% else %}
+        <div class="img-item"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80" alt="Coffee"></div>
+      {% endif %}
+    </div>
+    <div class="hero-badge">
+      <div class="hero-badge-text">Fresh<br>Daily<br>✦</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    {% set items = ['Specialty Coffee', 'Fresh Breakfast', 'Artisan Lunch', 'House-made Smoothies', 'Local Ingredients', 'Open 7 Days'] %}
+    {% for _ in range(2) %}
+      {% for item in items %}
+        <span class="marquee-item">{{ item }}</span>
+        <span class="marquee-item marquee-dot">✦</span>
+      {% endfor %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-img-wrap fade-up">
+    {% if data.gallery|length >= 4 %}
+      <img class="about-img-main" src="{{ url_for('static', filename='uploads/' + data.gallery[3].filename) }}" alt="Inside G&C Brews">
+    {% else %}
+      <img class="about-img-main" src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80" alt="Inside G&C Brews">
+    {% endif %}
+    {% if data.gallery|length >= 5 %}
+      <img class="about-img-accent" src="{{ url_for('static', filename='uploads/' + data.gallery[4].filename) }}" alt="Coffee">
+    {% else %}
+      <img class="about-img-accent" src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=500&q=80" alt="Coffee">
+    {% endif %}
+    <div class="about-tag">
+      <p>Since<br>'25</p>
+      <span>Est. 2025</span>
+    </div>
+  </div>
+  <div class="about-content fade-up">
+    <div class="section-eyebrow">Our Story</div>
+    <h2 class="section-title">Where Every<br><em>Morning Matters</em></h2>
+    <p class="section-body">G & C Brews was born from a simple idea: that a neighbourhood café should feel like home. We obsess over our coffee, take pride in our food, and care deeply about the people who walk through our doors.</p>
+    <p class="section-body">From our carefully sourced beans to our house-made breakfast plates, everything is made with intention — and a generous helping of heart.</p>
+    <a href="#menu" class="btn-primary" style="display:inline-block; margin-top:0.5rem">See Our Menu →</a>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="menu-header">
+    <div>
+      <div class="section-eyebrow" style="color:var(--sage-light)">What We Serve</div>
+      <h2 class="section-title" style="color:var(--cream); margin-bottom:0">The Menu</h2>
+    </div>
+    <p style="color:rgba(245,240,232,0.4); font-size:0.85rem; max-width:240px; line-height:1.7; font-weight:300; text-align:right">Hover to discover each dish</p>
+  </div>
+  <div class="menu-grid">
+    {% for item in data.menu %}
+    <div class="menu-card">
+      {% if item.image %}
+        <img src="{{ url_for('static', filename='uploads/' + item.image) }}" alt="{{ item.name }}">
+      {% else %}
+        <div class="menu-no-image">🍽</div>
+      {% endif %}
+      <div class="menu-card-overlay">
+        <div class="menu-card-cat">{{ item.category }}</div>
+        <div class="menu-card-name">{{ item.name }}</div>
+        <div class="menu-card-price">${{ item.price }}</div>
+        <div class="menu-card-desc">{{ item.description }}</div>
+      </div>
+    </div>
+    {% else %}
+    <div style="grid-column:span 3; text-align:center; padding:4rem; color:rgba(255,255,255,0.3)">
+      No menu items yet. <a href="/admin/menu/add" style="color:var(--sage-light)">Add some in the CMS →</a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- VISIT -->
+<section class="visit" id="visit">
+  <div class="visit-map">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d150.9!3d-33.75!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDQ1JzAwLjAiUyAxNTDCsDU0JzAwLjAiRQ!5e0!3m2!1sen!2sau!4v1700000000000"
+      allowfullscreen="" loading="lazy">
+    </iframe>
+  </div>
+  <div class="visit-info">
+    <div class="section-eyebrow">Find Us</div>
+    <h2 class="section-title">Come <em>Visit</em></h2>
+    <div class="visit-details">
+      <div class="visit-detail-item">
+        <div class="visit-detail-icon">📍</div>
+        <div>
+          <div class="visit-detail-label">Address</div>
+          <div class="visit-detail-value">{{ data.contact.address }}</div>
+        </div>
+      </div>
+      <div class="visit-detail-item">
+        <div class="visit-detail-icon">🕐</div>
+        <div>
+          <div class="visit-detail-label">Opening Hours</div>
+          <div class="visit-detail-value">
+            <div class="hours-table">
+              <span class="hours-day">Mon – Fri</span>
+              <span class="hours-time">{{ data.hours.mon_fri }}</span>
+              <span class="hours-day">Saturday</span>
+              <span class="hours-time">{{ data.hours.saturday }}</span>
+              <span class="hours-day">Sunday</span>
+              <span class="hours-time">{{ data.hours.sunday }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% if data.contact.phone %}
+      <div class="visit-detail-item">
+        <div class="visit-detail-icon">📞</div>
+        <div>
+          <div class="visit-detail-label">Phone</div>
+          <div class="visit-detail-value">{{ data.contact.phone }}</div>
+        </div>
+      </div>
+      {% endif %}
+      {% if data.contact.instagram %}
+      <div class="visit-detail-item">
+        <div class="visit-detail-icon">📸</div>
+        <div>
+          <div class="visit-detail-label">Instagram</div>
+          <div class="visit-detail-value">
+            <a href="https://instagram.com/{{ data.contact.instagram }}" target="_blank"
+               style="color:var(--sage-light); text-decoration:none">@{{ data.contact.instagram }}</a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+{% if data.gallery %}
+<section class="gallery-section">
+  <div class="gallery-header fade-up">
+    <div class="section-eyebrow">Follow Along</div>
+    {% if data.contact.instagram %}
+    <a href="https://instagram.com/{{ data.contact.instagram }}" target="_blank" class="insta-handle">
+      @{{ data.contact.instagram }}
+    </a>
+    {% endif %}
+  </div>
+  <div class="insta-grid">
+    {% for photo in data.gallery[:10] %}
+    <div class="insta-item">
+      <img src="{{ url_for('static', filename='uploads/' + photo.filename) }}" alt="Gallery">
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">G & C Brews<span>Café — Est. 2025</span></div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#visit">Visit Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <ul>
+          <li><a href="#">Mon–Fri: {{ data.hours.mon_fri }}</a></li>
+          <li><a href="#">Sat: {{ data.hours.saturday }}</a></li>
+          <li><a href="#">Sun: {{ data.hours.sunday }}</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          {% if data.contact.instagram %}
+          <li><a href="https://instagram.com/{{ data.contact.instagram }}" target="_blank">Instagram</a></li>
+          {% endif %}
+          {% if data.contact.phone %}
+          <li><a href="tel:{{ data.contact.phone }}">{{ data.contact.phone }}</a></li>
+          {% endif %}
+          <li><a href="#">Google Reviews</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 G & C Brews. All rights reserved.</span>
+    <a href="/admin" class="admin-link">Admin</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Nav shadow on scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').style.boxShadow =
+      window.scrollY > 60 ? '0 4px 30px rgba(0,0,0,0.08)' : 'none';
+  });
+</script>
+</body>
+</html>

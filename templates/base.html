@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}G & C Brews CMS{% endblock %}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --sage: #7a8c6e;
+    --sage-dark: #4f6247;
+    --sage-light: #c4d4b8;
+    --cream: #f5f0e8;
+    --charcoal: #2a2a25;
+    --muted: #8a8578;
+    --bg: #f8f7f4;
+    --white: #ffffff;
+    --border: #e8e4dc;
+    --danger: #c0392b;
+    --success: #27ae60;
+    --warning: #e67e22;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--charcoal);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 240px;
+    background: var(--charcoal);
+    padding: 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+  }
+
+  .sidebar-brand {
+    padding: 2rem 1.5rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .brand-logo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--cream);
+    display: block;
+  }
+
+  .brand-sub {
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sage-light);
+    font-weight: 500;
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+  .sidebar-nav {
+    padding: 1.5rem 0;
+    flex: 1;
+  }
+
+  .nav-group-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    font-weight: 600;
+    padding: 0 1.5rem 0.6rem;
+    margin-top: 1.2rem;
+  }
+
+  .nav-group-label:first-child { margin-top: 0; }
+
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1.5rem;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 400;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+  }
+
+  .sidebar-nav a:hover {
+    color: var(--cream);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .sidebar-nav a.active {
+    color: var(--cream);
+    background: rgba(122,140,110,0.2);
+    border-left-color: var(--sage);
+    font-weight: 500;
+  }
+
+  .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+
+  .sidebar-footer {
+    padding: 1.2rem 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .view-site-btn {
+    display: block;
+    text-align: center;
+    background: var(--sage-dark);
+    color: var(--cream);
+    padding: 0.7rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+
+  .view-site-btn:hover { background: var(--sage); }
+
+  /* MAIN */
+  .main {
+    margin-left: 240px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .topbar-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--charcoal);
+  }
+
+  .topbar-date {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .content {
+    padding: 2.5rem;
+    flex: 1;
+  }
+
+  /* FLASH MESSAGES */
+  .flash-messages {
+    margin-bottom: 1.5rem;
+  }
+
+  .flash {
+    padding: 0.85rem 1.2rem;
+    border-radius: 4px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .flash.success { background: #eafaf1; color: var(--success); border: 1px solid #a9dfbf; }
+  .flash.error   { background: #fdf2f0; color: var(--danger);  border: 1px solid #f5b7b1; }
+
+  /* CARDS */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 1.2rem 1.8rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .card-body { padding: 1.8rem; }
+
+  /* FORM ELEMENTS */
+  .form-group { margin-bottom: 1.4rem; }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--charcoal);
+    margin-bottom: 0.45rem;
+  }
+
+  label .hint {
+    font-weight: 300;
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="tel"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--charcoal);
+    background: var(--bg);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--sage);
+    box-shadow: 0 0 0 3px rgba(122,140,110,0.15);
+    background: var(--white);
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  .form-grid { display: grid; gap: 1.2rem; }
+  .form-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.65rem 1.4rem;
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary { background: var(--sage-dark); color: var(--cream); }
+  .btn-primary:hover { background: var(--sage); }
+
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:hover { background: #a93226; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--charcoal);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--sage); color: var(--sage-dark); }
+
+  .btn-sm { padding: 0.4rem 0.9rem; font-size: 0.75rem; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th {
+    text-align: left;
+    padding: 0.7rem 1rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #faf9f7; }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .badge-sage { background: var(--sage-light); color: var(--sage-dark); }
+  .badge-cream { background: var(--cream); color: var(--muted); }
+
+  /* STAT CARDS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--charcoal);
+    line-height: 1;
+  }
+
+  .stat-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+  }
+
+  /* IMAGE PREVIEW */
+  .img-preview {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 6px;
+    padding: 2rem;
+    text-align: center;
+    background: var(--bg);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .upload-zone:hover { border-color: var(--sage); }
+  .upload-zone p { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; }
+
+  /* GALLERY GRID */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 1px solid var(--border);
+  }
+
+  .gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery-item-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+  .actions { display: flex; gap: 0.5rem; }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--muted);
+  }
+
+  .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .empty-state p { font-size: 0.88rem; margin-bottom: 1.5rem; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <span class="brand-logo">G & C Brews</span>
+    <span class="brand-sub">Content Manager</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group-label">Overview</div>
+    <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' }}">
+      <span class="nav-icon">▦</span> Dashboard
+    </a>
+
+    <div class="nav-group-label">Content</div>
+    <a href="{{ url_for('hero') }}" class="{{ 'active' if request.endpoint == 'hero' }}">
+      <span class="nav-icon">✦</span> Hero / Intro
+    </a>
+    <a href="{{ url_for('menu') }}" class="{{ 'active' if request.endpoint in ['menu','menu_add','menu_edit'] }}">
+      <span class="nav-icon">🍽</span> Menu Items
+    </a>
+    <a href="{{ url_for('gallery') }}" class="{{ 'active' if request.endpoint == 'gallery' }}">
+      <span class="nav-icon">🖼</span> Gallery Photos
+    </a>
+
+    <div class="nav-group-label">Settings</div>
+    <a href="{{ url_for('hours') }}" class="{{ 'active' if request.endpoint == 'hours' }}">
+      <span class="nav-icon">🕐</span> Opening Hours
+    </a>
+    <a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint == 'contact' }}">
+      <span class="nav-icon">📍</span> Contact Info
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="/" target="_blank" class="view-site-btn">↗ View Website</a>
+    <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:space-between;">
+      <div>
+        <div style="font-size:0.7rem; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:0.2rem">Logged in as</div>
+        <div style="font-size:0.82rem; color:var(--cream); font-weight:500;">{{ current_user.username if current_user.is_authenticated else '' }}</div>
+      </div>
+      <a href="{{ url_for('logout') }}" title="Log out"
+         style="color:rgba(255,255,255,0.35); font-size:1.1rem; text-decoration:none; transition:color 0.2s;"
+         onmouseover="this.style.color='#e57373'"
+         onmouseout="this.style.color='rgba(255,255,255,0.35)'">⏻</a>
+    </div>
+    <div style="margin-top:0.8rem;">
+      <a href="{{ url_for('change_password') }}"
+         style="font-size:0.72rem; color:rgba(255,255,255,0.3); text-decoration:none; transition:color 0.2s;"
+         onmouseover="this.style.color='var(--sage-light)'"
+         onmouseout="this.style.color='rgba(255,255,255,0.3)'">🔒 Change password</a>
+    </div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">{% block page_title %}Dashboard{% endblock %}</div>
+    <div class="topbar-date" id="topbar-date"></div>
+  </div>
+  <div class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+<script>
+  const d = new Date();
+  document.getElementById('topbar-date').textContent = d.toLocaleDateString('en-AU', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+</script>
+</body>
+</html>

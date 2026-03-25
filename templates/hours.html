@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Opening Hours — G & C Brews CMS{% endblock %}
+{% block page_title %}Opening Hours{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:600px">
+  <div class="card-header">
+    <div class="card-title">🕐 Edit Opening Hours</div>
+  </div>
+  <div class="card-body">
+    <form method="POST">
+      <div class="form-group">
+        <label>Monday – Friday <span class="hint">(e.g. 5:30am – 3:00pm)</span></label>
+        <input type="text" name="mon_fri" value="{{ data.hours.mon_fri }}" required>
+      </div>
+      <div class="form-group">
+        <label>Saturday <span class="hint">(e.g. 6:00am – 3:00pm)</span></label>
+        <input type="text" name="saturday" value="{{ data.hours.saturday }}" required>
+      </div>
+      <div class="form-group">
+        <label>Sunday <span class="hint">(e.g. 7:00am – 2:00pm)</span></label>
+        <input type="text" name="sunday" value="{{ data.hours.sunday }}" required>
+      </div>
+      <div style="display:flex; gap:1rem; margin-top:0.5rem">
+        <button type="submit" class="btn btn-primary">Save Hours</button>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

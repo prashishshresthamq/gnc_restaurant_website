@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} Menu Item — G & C Brews CMS{% endblock %}
+{% block page_title %}{{ action }} Menu Item{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:700px">
+  <div class="card-header">
+    <div class="card-title">🍽 {{ action }} Menu Item</div>
+  </div>
+  <div class="card-body">
+    <form method="POST" enctype="multipart/form-data">
+      <div class="form-grid cols-2">
+        <div class="form-group">
+          <label>Dish Name</label>
+          <input type="text" name="name" value="{{ item.name if item else '' }}" placeholder="e.g. Eggs Benedict" required>
+        </div>
+        <div class="form-group">
+          <label>Price <span class="hint">(AUD, no $)</span></label>
+          <input type="text" name="price" value="{{ item.price if item else '' }}" placeholder="e.g. 19.00" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <select name="category">
+          {% set cats = ['Breakfast', 'Brunch', 'Lunch', 'Coffee', 'Drinks', 'Pastries', 'Healthy', 'Specials'] %}
+          {% for cat in cats %}
+            <option value="{{ cat }}" {{ 'selected' if item and item.category == cat }}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea name="description" placeholder="Short, appetising description of the dish…">{{ item.description if item else '' }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Photo <span class="hint">{% if item and item.image %}(upload new to replace current){% else %}(optional, JPG/PNG/WEBP){% endif %}</span></label>
+        {% if item and item.image %}
+          <div style="margin-bottom:0.8rem; display:flex; align-items:center; gap:1rem">
+            <img src="{{ url_for('static', filename='uploads/' + item.image) }}" style="height:80px; border-radius:6px; object-fit:cover; border:1px solid var(--border)">
+            <span style="font-size:0.8rem; color:var(--muted)">Current photo</span>
+          </div>
+        {% endif %}
+        <div class="upload-zone" onclick="document.getElementById('imageInput').click()">
+          <div style="font-size:2rem">📷</div>
+          <p>Click to choose a photo, or drag & drop</p>
+          <p style="font-size:0.75rem; margin-top:0.3rem">JPG, PNG, WEBP up to 10MB</p>
+          <input type="file" id="imageInput" name="image" accept="image/*" style="display:none" onchange="previewImage(this)">
+        </div>
+        <img id="newPreview" style="display:none; margin-top:0.8rem; height:100px; border-radius:6px; object-fit:cover; border:1px solid var(--border)">
+      </div>
+
+      <div style="display:flex; gap:1rem; margin-top:0.5rem">
+        <button type="submit" class="btn btn-primary">{{ action }} Item</button>
+        <a href="{{ url_for('menu') }}" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function previewImage(input) {
+  const preview = document.getElementById('newPreview');
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+// Drag & drop
+const zone = document.querySelector('.upload-zone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.borderColor = 'var(--sage)'; });
+zone.addEventListener('dragleave', () => { zone.style.borderColor = 'var(--border)'; });
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.style.borderColor = 'var(--border)';
+  const input = document.getElementById('imageInput');
+  input.files = e.dataTransfer.files;
+  previewImage(input);
+});
+</script>
+{% endblock %}
