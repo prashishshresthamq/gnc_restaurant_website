@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coming Soon — G & C Brews</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #2a2a25;
+    color: #f5f0e8;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Decorative background text */
+  body::before {
+    content: 'G&C';
+    position: fixed;
+    font-family: 'Playfair Display', serif;
+    font-size: 55vw;
+    font-style: italic;
+    font-weight: 700;
+    color: rgba(255,255,255,0.025);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  /* Subtle grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    max-width: 680px;
+    animation: fadeIn 1.2s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Logo circle */
+  .logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(168,187,153,0.4);
+    margin-bottom: 2.5rem;
+    animation: slowSpin 30s linear infinite;
+  }
+
+  @keyframes slowSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .logo-inner {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: #a8bb99;
+    line-height: 1.3;
+    animation: slowSpin 30s linear infinite reverse;
+  }
+
+  /* Eyebrow */
+  .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #7a8c6e;
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .eyebrow::before,
+  .eyebrow::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: #7a8c6e;
+  }
+
+  /* Main heading */
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.05;
+    font-weight: 400;
+    margin-bottom: 0.3rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: #a8bb99;
+  }
+
+  /* Subtitle */
+  .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    font-weight: 300;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* Divider */
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #7a8c6e, transparent);
+    margin: 0 auto 2.5rem;
+  }
+
+  /* Description */
+  .desc {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: rgba(245,240,232,0.55);
+    font-weight: 300;
+    margin-bottom: 3rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Countdown */
+  .countdown {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .count-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .count-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    line-height: 1;
+    color: #f5f0e8;
+    min-width: 70px;
+    text-align: center;
+  }
+
+  .count-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #7a8c6e;
+    font-weight: 500;
+  }
+
+  .count-sep {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: rgba(122,140,110,0.4);
+    align-self: flex-start;
+    margin-top: 0.3rem;
+  }
+
+  /* Hours preview */
+  .hours-preview {
+    display: inline-flex;
+    gap: 2.5rem;
+    padding: 1.5rem 2.5rem;
+    border: 1px solid rgba(122,140,110,0.2);
+    margin-bottom: 3rem;
+  }
+
+  .hours-item {
+    text-align: center;
+  }
+
+  .hours-day {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #7a8c6e;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+
+  .hours-time {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: rgba(245,240,232,0.75);
+  }
+
+  /* Social / contact */
+  .social-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .social-row a {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .social-row a:hover { color: #a8bb99; }
+
+  .social-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(122,140,110,0.4);
+  }
+
+  /* Address */
+  .address {
+    margin-top: 2.5rem;
+    font-size: 0.78rem;
+    color: rgba(245,240,232,0.25);
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="logo-wrap">
+    <div class="logo-inner">G&C<br>Brews</div>
+  </div>
+
+  <div class="eyebrow">Something good is brewing</div>
+
+  <h1>Coming<br><em>Soon.</em></h1>
+  <p class="subtitle">Breakfast & Lunch — Open 7 Days</p>
+
+  <div class="divider"></div>
+
+  <p class="desc">
+    We're putting the finishing touches on our new website.
+    In the meantime, come visit us in store — the coffee's always on.
+  </p>
+
+  <!-- Countdown timer -->
+  <div class="countdown">
+    <div class="count-item">
+      <div class="count-num" id="days">00</div>
+      <div class="count-label">Days</div>
+    </div>
+    <div class="count-sep">:</div>
+    <div class="count-item">
+      <div class="count-num" id="hours">00</div>
+      <div class="count-label">Hours</div>
+    </div>
+    <div class="count-sep">:</div>
+    <div class="count-item">
+      <div class="count-num" id="minutes">00</div>
+      <div class="count-label">Minutes</div>
+    </div>
+    <div class="count-sep">:</div>
+    <div class="count-item">
+      <div class="count-num" id="seconds">00</div>
+      <div class="count-label">Seconds</div>
+    </div>
+  </div>
+
+  <!-- Opening hours -->
+  <div class="hours-preview">
+    <div class="hours-item">
+      <div class="hours-day">Mon – Fri</div>
+      <div class="hours-time">5:30am – 3pm</div>
+    </div>
+    <div class="hours-item">
+      <div class="hours-day">Saturday</div>
+      <div class="hours-time">6am – 3pm</div>
+    </div>
+    <div class="hours-item">
+      <div class="hours-day">Sunday</div>
+      <div class="hours-time">7am – 2pm</div>
+    </div>
+  </div>
+
+  <!-- Social links -->
+  <div class="social-row">
+    <a href="https://instagram.com/gnc.brews2025" target="_blank">Instagram</a>
+    <div class="social-dot"></div>
+    <a href="https://maps.google.com/?q=G+%26+C+BREWS" target="_blank">Find Us</a>
+    <div class="social-dot"></div>
+    <a href="mailto:hello@gncbrews.com.au">Contact</a>
+  </div>
+
+  <div class="address">786 Old Princes Highway, Sydney NSW</div>
+
+</div>
+
+<script>
+  // Set your launch date here — change to whenever you want the site to go live
+  const launchDate = new Date('2025-06-01T00:00:00');
+
+  function updateCountdown() {
+    const now  = new Date();
+    const diff = launchDate - now;
+
+    if (diff <= 0) {
+      document.querySelector('.countdown').style.display = 'none';
+      return;
+    }
+
+    const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById('days').textContent    = String(days).padStart(2, '0');
+    document.getElementById('hours').textContent   = String(hours).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
