@@ -111,7 +111,7 @@ def upload_image(file_key):
 @app.route("/")
 def website():
     data = load_data()
-    return render_template("website.html", data=data)
+    return render_template("coming_soon.html", data=data)
 
 # ── Auth routes ──────────────────────────────────────────────────
 
